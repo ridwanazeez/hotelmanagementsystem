@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -45,13 +46,13 @@
                         </Menu>
                      </menus>
                   </MenuBar>
-                  <Pane fx:id="bookingsScreen" layoutY="35.0" prefHeight="765.0" prefWidth="1280.0" visible="false">
+                  <Pane fx:id="bookingsScreen" layoutY="35.0" prefHeight="730.0" prefWidth="1280.0" visible="false">
                      <children>
-                        <SplitPane dividerPositions="0.75" layoutY="130.0" prefHeight="670.0" prefWidth="1280.0">
+                        <SplitPane dividerPositions="0.75" layoutY="95.0" prefHeight="670.0" prefWidth="1280.0">
                            <items>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <TableView layoutX="13.0" layoutY="17.0" prefHeight="639.0" prefWidth="926.0">
+                                    <TableView fx:id="bookingsTable" layoutX="13.0" layoutY="17.0" prefHeight="639.0" prefWidth="926.0">
                                        <columns>
                                           <TableColumn fx:id="bid" prefWidth="75.0" text="Booking ID" />
                                           <TableColumn fx:id="ridBookingsCol" prefWidth="75.0" text="Room ID" />
@@ -112,27 +113,26 @@
                               </AnchorPane>
                            </items>
                         </SplitPane>
-                        <Text layoutX="538.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bookings" textAlignment="CENTER">
+                        <Text layoutX="538.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bookings" textAlignment="CENTER">
                            <font>
                               <Font size="50.0" />
                            </font>
                         </Text>
                      </children>
                   </Pane>
-                  <Pane fx:id="guestsScreen" layoutY="35.0" prefHeight="765.0" prefWidth="1280.0" visible="false">
+                  <Pane fx:id="guestsScreen" layoutY="35.0" prefHeight="730.0" prefWidth="1280.0" visible="false">
                      <children>
-                        <SplitPane dividerPositions="0.75" layoutY="130.0" prefHeight="670.0" prefWidth="1280.0">
+                        <SplitPane dividerPositions="0.75" layoutY="95.0" prefHeight="670.0" prefWidth="1280.0">
                            <items>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <TableView layoutX="13.0" layoutY="17.0" prefHeight="639.0" prefWidth="926.0">
+                                    <TableView fx:id="guestsTable" layoutX="13.0" layoutY="17.0" prefHeight="639.0" prefWidth="926.0">
                                        <columns>
                                           <TableColumn fx:id="gid" prefWidth="75.0" text="Guest ID" />
                                           <TableColumn fx:id="guestFNameCol" prefWidth="75.0" text="First Name" />
                                           <TableColumn fx:id="guestLNameCol" prefWidth="75.0" text="Last Name" />
                                           <TableColumn fx:id="guestAddressCol" prefWidth="75.0" text="Address" />
                                           <TableColumn fx:id="guestDOBCol" prefWidth="75.0" text="Date of Birth" />
-                                          <TableColumn fx:id="guestAgeCol" prefWidth="75.0" text="Age" />
                                           <TableColumn fx:id="guestNumberCol" prefWidth="75.0" text="Number" />
                                        </columns>
                                        <columnResizePolicy>
@@ -190,7 +190,7 @@
                               </AnchorPane>
                            </items>
                         </SplitPane>
-                        <Text layoutX="566.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Guests" textAlignment="CENTER">
+                        <Text layoutX="566.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Guests" textAlignment="CENTER">
                            <font>
                               <Font size="50.0" />
                            </font>
@@ -199,11 +199,11 @@
                   </Pane>
                   <Pane fx:id="roomsScreen" layoutY="35.0" prefHeight="765.0" prefWidth="1280.0" visible="false">
                      <children>
-                        <SplitPane dividerPositions="0.75" layoutY="130.0" prefHeight="670.0" prefWidth="1280.0">
+                        <SplitPane dividerPositions="0.75" layoutY="95.0" prefHeight="670.0" prefWidth="1280.0">
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <TableView layoutX="13.0" layoutY="17.0" prefHeight="639.0" prefWidth="926.0">
+                                    <TableView fx:id="roomsTable" layoutX="13.0" layoutY="17.0" prefHeight="639.0" prefWidth="926.0">
                                       <columns>
                                         <TableColumn fx:id="rid" prefWidth="75.0" text="Room ID" />
                                         <TableColumn fx:id="roomNumber" prefWidth="75.0" text="Room Number" />
@@ -265,7 +265,7 @@
                               </AnchorPane>
                           </items>
                         </SplitPane>
-                        <Text layoutX="564.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooms" textAlignment="CENTER">
+                        <Text layoutX="564.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooms" textAlignment="CENTER">
                            <font>
                               <Font size="50.0" />
                            </font>
@@ -274,12 +274,12 @@
                   </Pane>
                   <Pane fx:id="aboutScreen" layoutY="35.0" prefHeight="765.0" prefWidth="1280.0" visible="false">
                      <children>
-                        <Text layoutX="496.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hotel Management System" textAlignment="CENTER">
+                        <Text layoutX="496.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hotel Management System" textAlignment="CENTER">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text layoutX="596.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Version 1.0">
+                        <Text layoutX="596.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Version 1.0">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -301,7 +301,6 @@
                      </font>
                   </Text>
                   <TextField fx:id="username" layoutX="453.0" layoutY="369.0" prefHeight="31.0" prefWidth="375.0" promptText="Username" />
-                  <TextField fx:id="password" layoutX="453.0" layoutY="422.0" prefHeight="31.0" prefWidth="375.0" promptText="Password" />
                   <Button layoutX="607.0" layoutY="481.0" mnemonicParsing="false" onAction="#signIn" text="Sign In" />
                   <Text fx:id="error" fill="RED" layoutX="472.0" layoutY="623.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error: Incorrect Username or Password" textAlignment="CENTER" visible="false">
                      <font>
@@ -317,6 +316,7 @@
                       </Menu>
                     </menus>
                   </MenuBar>
+                  <PasswordField fx:id="password" layoutX="453.0" layoutY="423.0" prefHeight="31.0" prefWidth="375.0" promptText="Password" />
                </children>
             </Pane>
          </children>

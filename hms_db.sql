@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 05, 2019 at 04:46 AM
+-- Generation Time: May 06, 2019 at 12:37 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -57,7 +57,15 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `DateofBirth` date NOT NULL,
   `Number` varchar(13) NOT NULL,
   PRIMARY KEY (`GID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `guests`
+--
+
+INSERT INTO `guests` (`GID`, `FirstName`, `LastName`, `Address`, `DateofBirth`, `Number`) VALUES
+(1, 'Marvin', 'Dolo', 'Green Street', '1985-05-05', '555-111-1234'),
+(2, 'Aubrey', 'Graham', '6th Street', '1986-10-24', '416-666-6666');
 
 -- --------------------------------------------------------
 
