@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -334,8 +335,14 @@ public class UIController implements Initializable {
             while(rs.next()) {
                 ridBookingsUpdate.setText(rs.getString("RID"));
                 gidBookingsUpdate.setText(rs.getString("GID"));
-                (checkInBookingsUpdate.getEditor()).setText(rs.getString("CheckIn"));                
-                (checkOutBookingsUpdate.getEditor()).setText(rs.getString("CheckOut"));
+                Date dbSQLDate = rs.getDate("CheckIn");
+                java.util.Date dbSQLDateConverted = new java.util.Date(dbSQLDate.getTime());
+                LocalDate localdate = dbSQLDateConverted.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                checkInBookingsUpdate.setValue(localdate);
+                Date dbSQLDate2 = rs.getDate("CheckIn");
+                java.util.Date dbSQLDateConverted2 = new java.util.Date(dbSQLDate2.getTime());
+                LocalDate localdate2 = dbSQLDateConverted2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                checkOutBookingsUpdate.setValue(localdate2);
             }
         }catch(Exception e){
             System.out.println(e);
@@ -427,7 +434,10 @@ public class UIController implements Initializable {
                 guestFNameUpdate.setText(rs.getString("FirstName"));
                 guestLNameUpdate.setText(rs.getString("LastName"));
                 guestAddressUpdate.setText(rs.getString("Address"));
-                (guestDOBUpdate.getEditor()).setText(rs.getString("DateofBirth"));
+                Date dbSQLDate = rs.getDate("DateofBirth");
+                java.util.Date dbSQLDateConverted = new java.util.Date(dbSQLDate.getTime());
+                LocalDate localdate = dbSQLDateConverted.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                guestDOBUpdate.setValue(localdate);
                 guestNumberUpdate.setText(rs.getString("Number"));
             }
         }catch(Exception e){
@@ -438,13 +448,18 @@ public class UIController implements Initializable {
     @FXML
     private void updateGuest(ActionEvent event) throws Exception {
         Connection conn = getConnection();
-        String SQL = "UPDATE guests SET (FirstName=?, LastName=?, Address=?, DateofBirth=?, Number=?) WHERE GID=?";
+        String SQL = "UPDATE guests SET "
+                + "FirstName=?, "
+                + "LastName=?, "
+                + "Address=?, "
+                + "DateofBirth=?, "
+                + "Number=? "
+                + "WHERE GID=?";
         PreparedStatement pst = conn.prepareStatement(SQL);
         String fnameupdate = guestFNameUpdate.getText();
         String lnameupdate = guestLNameUpdate.getText();
         String addressupdate = guestAddressUpdate.getText();
-        LocalDate dob = guestDOBUpdate.getValue();
-        Date dobupdate = Date.valueOf(dob);
+        Date dobupdate = Date.valueOf(guestDOBUpdate.getValue());
         String numberupdate = guestNumberUpdate.getText();
         String gidupdate = gidUpdate.getText();
         try {
@@ -537,23 +552,26 @@ public class UIController implements Initializable {
     @FXML
     private void updateRoom(ActionEvent event) throws SQLException, Exception {
         Connection conn = getConnection();
-        String SQL = "UPDATE rooms SET (RoomNumber=?, NumberOfBeds=?, NumberOfBathrooms=?, Price=?, Status=?) WHERE RID=?";
+        String SQL = "UPDATE rooms SET "
+                + "RoomNumber=?, "
+                + " NumberOfBeds=?, "
+                + " NumberOfBathrooms=?, "
+                + " Price=?, "
+                + " Status=? "
+                + "WHERE RID=?";
         PreparedStatement pst = conn.prepareStatement(SQL);
         String roomnumber = roomNumberUpdate.getText();
         String numberofbeds = numberOfBedsUpdate.getText();
         String numberofbathrooms = numberOfBathroomsUpdate.getText();
         String price = priceUpdate.getText();
         String status = statusUpdate.getValue();
-        System.out.println(status);
         String ridupdate = ridUpdate.getText();
         try {
             pst.setString(1, roomnumber);
             pst.setString(2, numberofbeds);
             pst.setString(3, numberofbathrooms);
             pst.setString(4, price);
-            System.out.println(status);
             pst.setString(5, status);
-            System.out.println(status);
             pst.setString(6, ridupdate);
             pst.execute();
         }catch(Exception e){
