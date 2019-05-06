@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 06, 2019 at 07:26 PM
+-- Generation Time: May 06, 2019 at 08:37 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -40,7 +40,14 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   PRIMARY KEY (`BID`),
   KEY `RID` (`RID`),
   KEY `GID` (`GID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`BID`, `RID`, `GID`, `CheckIn`, `CheckOut`) VALUES
+(2, 1, 1, '2019-05-06', '2019-05-13');
 
 -- --------------------------------------------------------
 
@@ -94,12 +101,12 @@ CREATE TABLE IF NOT EXISTS `rooms` (
 --
 
 INSERT INTO `rooms` (`RID`, `RoomNumber`, `NumberOfBeds`, `NumberOfBathrooms`, `Price`, `Status`) VALUES
-(1, 'A1', 1, 1, 14000, 'FREE'),
+(1, 'A1', 1, 1, 14000, 'BOOKED'),
 (2, 'A2', 2, 1, 20000, 'FREE'),
 (3, 'A3', 3, 1, 25000, 'FREE'),
 (4, 'A4', 2, 1, 20000, 'FREE'),
 (5, 'A5', 1, 1, 14000, 'FREE'),
-(6, 'A6', 1, 1, 14000, 'FREE');
+(6, 'A6', 3, 1, 25000, 'FREE');
 
 -- --------------------------------------------------------
 
