@@ -329,7 +329,8 @@ public class UIController implements Initializable {
         PreparedStatement pst = conn.prepareStatement(SQL);
         ResultSet rs;
         try{
-            String bidupdate = gidUpdate.getText();
+            String bidupdate = bidUpdate.getText();
+            System.out.print(bidupdate);
             pst.setString(1, bidupdate);
             rs = pst.executeQuery();
             while(rs.next()) {
@@ -339,7 +340,7 @@ public class UIController implements Initializable {
                 java.util.Date dbSQLDateConverted = new java.util.Date(dbSQLDate.getTime());
                 LocalDate localdate = dbSQLDateConverted.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 checkInBookingsUpdate.setValue(localdate);
-                Date dbSQLDate2 = rs.getDate("CheckIn");
+                Date dbSQLDate2 = rs.getDate("CheckOut");
                 java.util.Date dbSQLDateConverted2 = new java.util.Date(dbSQLDate2.getTime());
                 LocalDate localdate2 = dbSQLDateConverted2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 checkOutBookingsUpdate.setValue(localdate2);
@@ -352,12 +353,17 @@ public class UIController implements Initializable {
     @FXML
     private void updateBooking(ActionEvent event) throws Exception {
         Connection conn = getConnection();
-        String SQL = "UPDATE bookings SET (RID=?, GID=?, CheckIn=?, CheckOut=?) WHERE BID=?";
+        String SQL = "UPDATE bookings SET "
+                + "RID=?, "
+                + "GID=?, "
+                + "CheckIn=?, "
+                + "CheckOut=? "
+                + "WHERE BID=?";
         PreparedStatement pst = conn.prepareStatement(SQL);
-        String rid = ridBookingsInput.getText();
-        String gid = gidBookingsInput.getText();
-        Date checkin = Date.valueOf(checkInBookingsInput.getValue());
-        Date checkout = Date.valueOf(checkOutBookingsInput.getValue());
+        String rid = ridBookingsUpdate.getText();
+        String gid = gidBookingsUpdate.getText();
+        Date checkin = Date.valueOf(checkInBookingsUpdate.getValue());
+        Date checkout = Date.valueOf(checkOutBookingsUpdate.getValue());
         String bid = bidUpdate.getText();
         try {
             pst.setString(1, rid);
