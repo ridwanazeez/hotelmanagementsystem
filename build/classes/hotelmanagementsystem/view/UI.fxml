@@ -93,7 +93,8 @@
                                                       <TextField fx:id="gidBookingsUpdate" layoutX="64.0" layoutY="203.0" promptText="Guest ID" />
                                                       <DatePicker fx:id="checkInBookingsUpdate" layoutX="65.0" layoutY="245.0" prefHeight="31.0" prefWidth="186.0" promptText="Check In" />
                                                       <DatePicker fx:id="checkOutBookingsUpdate" layoutX="65.0" layoutY="287.0" prefHeight="31.0" prefWidth="186.0" promptText="Check Out" />
-                                                      <Button layoutX="104.0" layoutY="327.0" mnemonicParsing="false" onAction="#updateBooking" text="Update Booking" textAlignment="CENTER" />
+                                                      <Button layoutX="123.0" layoutY="329.0" mnemonicParsing="false" onAction="#updateBooking" text="Update Booking" textAlignment="CENTER" />
+                                                      <Button layoutX="65.0" layoutY="329.0" mnemonicParsing="false" onAction="#getBooking" prefHeight="31.0" prefWidth="53.0" text="Get Booking" textAlignment="CENTER" />
                                                    </children>
                                                 </AnchorPane>
                                              </content>
@@ -164,13 +165,14 @@
                                              <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="629.0" prefWidth="238.0">
                                                    <children>
-                                                      <TextField fx:id="gidUpdate" layoutX="64.0" layoutY="121.0" promptText="Enter GID" />
+                                                      <TextField fx:id="gidUpdate" layoutX="64.0" layoutY="121.0" promptText="Enter Guest ID" />
                                                       <TextField fx:id="guestFNameUpdate" layoutX="64.0" layoutY="162.0" promptText="First Name" />
                                                       <TextField fx:id="guestLNameUpdate" layoutX="64.0" layoutY="203.0" promptText="Last Name" />
                                                       <TextField fx:id="guestAddressUpdate" layoutX="64.0" layoutY="243.0" promptText="Address" />
                                                       <DatePicker fx:id="guestDOBUpdate" layoutX="64.0" layoutY="282.0" prefHeight="31.0" prefWidth="187.0" promptText="Date of Birth" />
                                                       <TextField fx:id="guestNumberUpdate" layoutX="64.0" layoutY="323.0" promptText="Number" />
-                                                      <Button layoutX="102.0" layoutY="365.0" mnemonicParsing="false" onAction="#updateGuest" text="Update Guest" textAlignment="CENTER" />
+                                                      <Button layoutX="140.0" layoutY="366.0" mnemonicParsing="false" onAction="#updateGuest" text="Update Guest" textAlignment="CENTER" />
+                                                      <Button layoutX="64.0" layoutY="366.0" mnemonicParsing="false" onAction="#getGuest" prefHeight="31.0" prefWidth="66.0" text="Get Guest" textAlignment="CENTER" />
                                                    </children>
                                                 </AnchorPane>
                                              </content>
@@ -244,10 +246,11 @@
                                                       <TextField fx:id="ridUpdate" layoutX="64.0" layoutY="121.0" promptText="Enter Room ID" />
                                                       <TextField fx:id="roomNumberUpdate" layoutX="64.0" layoutY="162.0" promptText="Room Number" />
                                                       <TextField fx:id="numberOfBedsUpdate" layoutX="64.0" layoutY="203.0" promptText="Number of Beds" />
-                                                      <TextField fx:id="numberofBathroomsUpdate" layoutX="64.0" layoutY="243.0" promptText="Number of Bathrooms" />
+                                                      <TextField fx:id="numberOfBathroomsUpdate" layoutX="64.0" layoutY="243.0" promptText="Number of Bathrooms" />
                                                       <TextField fx:id="priceUpdate" layoutX="64.0" layoutY="285.0" promptText="Price" />
                                                       <ComboBox fx:id="statusUpdate" layoutX="65.0" layoutY="328.0" prefHeight="31.0" prefWidth="185.0" promptText="Status" />
-                                                      <Button layoutX="101.0" layoutY="372.0" mnemonicParsing="false" onAction="#updateRoom" text="Update Room" textAlignment="CENTER" />
+                                                      <Button layoutX="137.0" layoutY="372.0" mnemonicParsing="false" onAction="#updateRoom" text="Update Room" textAlignment="CENTER" />
+                                                      <Button layoutX="64.0" layoutY="372.0" mnemonicParsing="false" onAction="#getRoom" prefHeight="31.0" prefWidth="66.0" text="Get Room" textAlignment="CENTER" />
                                                    </children>
                                                 </AnchorPane>
                                              </content>

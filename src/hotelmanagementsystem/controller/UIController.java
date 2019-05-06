@@ -16,7 +16,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +48,9 @@ public class UIController implements Initializable {
 
     ObservableList<String> statuscreatelist = FXCollections.observableArrayList("FREE", "BOOKED");
     ObservableList<String> statusupdatelist = FXCollections.observableArrayList("FREE", "BOOKED");
-
+    
+    LocalDate localDate; 
+    
     @FXML
     private Pane mainScreen;
     @FXML
@@ -81,8 +83,6 @@ public class UIController implements Initializable {
     private TextField roomNumberUpdate;
     @FXML
     private TextField priceUpdate;
-    @FXML
-    private TextField numberofBathroomsUpdate;
     @FXML
     private TextField numberOfBedsUpdate;
     @FXML
@@ -177,6 +177,8 @@ public class UIController implements Initializable {
     private ComboBox<String> statusUpdate;
     @FXML
     private TextField numberOfBathroomsCreate;
+    @FXML
+    private TextField numberOfBathroomsUpdate;
 
     /**
      * Initializes the controller class.
@@ -249,10 +251,7 @@ public class UIController implements Initializable {
         guestsTable.setItems(gueststablelist);
         roomsTable.setItems(roomstablelist);
         
-        statusCreate.setValue("FREE");
         statusCreate.setItems(statuscreatelist);
-        
-        statusUpdate.setValue("FREE");
         statusUpdate.setItems(statusupdatelist);
    
     }    
@@ -307,7 +306,6 @@ public class UIController implements Initializable {
         Date checkin = Date.valueOf(checkInBookingsInput.getValue());
         Date checkout = Date.valueOf(checkOutBookingsInput.getValue());
         try {
-            pst = conn.prepareStatement(SQL);
             pst.setString(1, rid);
             pst.setString(2, gid);
             pst.setDate(3, checkin);
@@ -324,7 +322,51 @@ public class UIController implements Initializable {
     }
     
     @FXML
-    private void updateBooking(ActionEvent event) {
+    private void getBooking(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "SELECT * FROM bookings WHERE BID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        ResultSet rs;
+        try{
+            String bidupdate = gidUpdate.getText();
+            pst.setString(1, bidupdate);
+            rs = pst.executeQuery();
+            while(rs.next()) {
+                ridBookingsUpdate.setText(rs.getString("RID"));
+                gidBookingsUpdate.setText(rs.getString("GID"));
+                (checkInBookingsUpdate.getEditor()).setText(rs.getString("CheckIn"));                
+                (checkOutBookingsUpdate.getEditor()).setText(rs.getString("CheckOut"));
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    @FXML
+    private void updateBooking(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "UPDATE bookings SET (RID=?, GID=?, CheckIn=?, CheckOut=?) WHERE BID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String rid = ridBookingsInput.getText();
+        String gid = gidBookingsInput.getText();
+        Date checkin = Date.valueOf(checkInBookingsInput.getValue());
+        Date checkout = Date.valueOf(checkOutBookingsInput.getValue());
+        String bid = bidUpdate.getText();
+        try {
+            pst.setString(1, rid);
+            pst.setString(2, gid);
+            pst.setDate(3, checkin);
+            pst.setDate(4, checkout);
+            pst.setString(5, bid);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        ridBookingsInput.setText("");
+        gidBookingsInput.setText("");        
+        checkInBookingsInput.setValue(null);
+        checkOutBookingsInput.setValue(null);        
     }
 
     @FXML
@@ -334,7 +376,6 @@ public class UIController implements Initializable {
         PreparedStatement pst = conn.prepareStatement(SQL);
         String bid = bidDelete.getText();
         try {
-            pst = conn.prepareStatement(SQL);
             pst.setString(1, bid);
             pst.execute();
         }catch(Exception e){
@@ -355,7 +396,6 @@ public class UIController implements Initializable {
         Date dob = Date.valueOf(guestDOBInput.getValue());
         String number = guestNumberInput.getText();
         try {
-            pst = conn.prepareStatement(SQL);
             pst.setString(1, fname);
             pst.setString(2, lname);
             pst.setString(3, address);
@@ -374,7 +414,57 @@ public class UIController implements Initializable {
     }
     
     @FXML
-    private void updateGuest(ActionEvent event) {
+    private void getGuest(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "SELECT * FROM guests WHERE GID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        ResultSet rs;
+        try{
+            String gidupdate = gidUpdate.getText();
+            pst.setString(1, gidupdate);
+            rs = pst.executeQuery();
+            while(rs.next()) {
+                guestFNameUpdate.setText(rs.getString("FirstName"));
+                guestLNameUpdate.setText(rs.getString("LastName"));
+                guestAddressUpdate.setText(rs.getString("Address"));
+                (guestDOBUpdate.getEditor()).setText(rs.getString("DateofBirth"));
+                guestNumberUpdate.setText(rs.getString("Number"));
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    @FXML
+    private void updateGuest(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "UPDATE guests SET (FirstName=?, LastName=?, Address=?, DateofBirth=?, Number=?) WHERE GID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String fnameupdate = guestFNameUpdate.getText();
+        String lnameupdate = guestLNameUpdate.getText();
+        String addressupdate = guestAddressUpdate.getText();
+        LocalDate dob = guestDOBUpdate.getValue();
+        Date dobupdate = Date.valueOf(dob);
+        String numberupdate = guestNumberUpdate.getText();
+        String gidupdate = gidUpdate.getText();
+        try {
+            pst.setString(1, fnameupdate);
+            pst.setString(2, lnameupdate);
+            pst.setString(3, addressupdate);
+            pst.setDate(4, dobupdate);
+            pst.setString(5, numberupdate);
+            pst.setString(6, gidupdate);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        gidUpdate.setText("");
+        guestFNameUpdate.setText("");
+        guestLNameUpdate.setText("");
+        guestAddressUpdate.setText("");
+        guestDOBUpdate.setValue(null);
+        guestNumberUpdate.setText("");        
     }
 
     @FXML
@@ -384,7 +474,6 @@ public class UIController implements Initializable {
         PreparedStatement pst = conn.prepareStatement(SQL);
         String gid = gidDelete.getText();
         try {
-            pst = conn.prepareStatement(SQL);
             pst.setString(1, gid);
             pst.execute();
         }catch(Exception e){
@@ -405,7 +494,6 @@ public class UIController implements Initializable {
         String price = priceCreate.getText();
         String status = statusCreate.getValue();
         try {
-            pst = conn.prepareStatement(SQL);
             pst.setString(1, roomnumber);
             pst.setString(2, numberofbeds);
             pst.setString(3, numberofbathrooms);
@@ -425,7 +513,60 @@ public class UIController implements Initializable {
     }
     
     @FXML
-    private void updateRoom(ActionEvent event) {
+    private void getRoom(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "SELECT * FROM rooms WHERE RID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        ResultSet rs;
+        try{
+            String ridupdate = ridUpdate.getText();
+            pst.setString(1, ridupdate);
+            rs = pst.executeQuery();
+            while(rs.next()) {
+                roomNumberUpdate.setText(rs.getString("RoomNumber"));
+                numberOfBedsUpdate.setText(rs.getString("NumberOfBeds"));
+                numberOfBathroomsUpdate.setText(rs.getString("NumberOfBathrooms"));
+                priceUpdate.setText(rs.getString("Price"));
+                statusUpdate.setPromptText("Status");
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }  
+    
+    @FXML
+    private void updateRoom(ActionEvent event) throws SQLException, Exception {
+        Connection conn = getConnection();
+        String SQL = "UPDATE rooms SET (RoomNumber=?, NumberOfBeds=?, NumberOfBathrooms=?, Price=?, Status=?) WHERE RID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String roomnumber = roomNumberUpdate.getText();
+        String numberofbeds = numberOfBedsUpdate.getText();
+        String numberofbathrooms = numberOfBathroomsUpdate.getText();
+        String price = priceUpdate.getText();
+        String status = statusUpdate.getValue();
+        System.out.println(status);
+        String ridupdate = ridUpdate.getText();
+        try {
+            pst.setString(1, roomnumber);
+            pst.setString(2, numberofbeds);
+            pst.setString(3, numberofbathrooms);
+            pst.setString(4, price);
+            System.out.println(status);
+            pst.setString(5, status);
+            System.out.println(status);
+            pst.setString(6, ridupdate);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        ridUpdate.setText("");
+        roomNumberUpdate.setText("");
+        numberOfBedsUpdate.setText("");
+        numberOfBathroomsUpdate.setText("");
+        priceUpdate.setText("");
+        statusUpdate.setValue("");
+        statusUpdate.setPromptText("Status");
     }
 
     @FXML
@@ -435,7 +576,6 @@ public class UIController implements Initializable {
         PreparedStatement pst = conn.prepareStatement(SQL);
         String rid = ridDelete.getText();
         try {
-            pst = conn.prepareStatement(SQL);
             pst.setString(1, rid);
             pst.execute();
         }catch(Exception e){
@@ -529,4 +669,5 @@ public class UIController implements Initializable {
         guestsTable.setItems(gueststablelist);
         roomsTable.setItems(roomstablelist);
     }
+
 }

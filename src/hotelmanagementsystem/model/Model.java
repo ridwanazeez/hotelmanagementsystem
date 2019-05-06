@@ -23,7 +23,7 @@ public class Model {
             Class.forName(driver);
 
             Connection conn = DriverManager.getConnection(url, username, password);
-            System.out.println("Connected");
+            //System.out.println("Connected");
             return conn;
         }catch(Exception e){
             System.out.println(e);

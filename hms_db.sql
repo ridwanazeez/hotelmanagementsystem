@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 06, 2019 at 12:37 AM
+-- Generation Time: May 06, 2019 at 07:26 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   PRIMARY KEY (`BID`),
   KEY `RID` (`RID`),
   KEY `GID` (`GID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `DateofBirth` date NOT NULL,
   `Number` varchar(13) NOT NULL,
   PRIMARY KEY (`GID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `guests`
@@ -65,7 +65,12 @@ CREATE TABLE IF NOT EXISTS `guests` (
 
 INSERT INTO `guests` (`GID`, `FirstName`, `LastName`, `Address`, `DateofBirth`, `Number`) VALUES
 (1, 'Marvin', 'Dolo', 'Green Street', '1985-05-05', '555-111-1234'),
-(2, 'Aubrey', 'Graham', '6th Street', '1986-10-24', '416-666-6666');
+(2, 'Aubrey', 'Graham', '6th Street', '1986-10-24', '416-666-6666'),
+(3, 'gest', 'test', 'test', '2019-04-30', '555-123-1234'),
+(4, 'dawdaw', 'adawdawd', 'adawdawd', '2019-05-15', '123124'),
+(5, 'awfawdd', 'dawdawdxwa', 'adawdwad', '2019-05-14', '1241234'),
+(6, 'awfawdcasd', 'awdcawdwa', 'awdcawdcaw', '2019-05-14', '1232'),
+(7, 'zsccd', 'dxxdvvx', 'zdxdv', '2019-05-13', '343243');
 
 -- --------------------------------------------------------
 
@@ -82,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   `Price` int(5) NOT NULL,
   `Status` varchar(10) NOT NULL,
   PRIMARY KEY (`RID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rooms`
@@ -93,7 +98,8 @@ INSERT INTO `rooms` (`RID`, `RoomNumber`, `NumberOfBeds`, `NumberOfBathrooms`, `
 (2, 'A2', 2, 1, 20000, 'FREE'),
 (3, 'A3', 3, 1, 25000, 'FREE'),
 (4, 'A4', 2, 1, 20000, 'FREE'),
-(5, 'A5', 1, 1, 14000, 'FREE');
+(5, 'A5', 1, 1, 14000, 'FREE'),
+(6, 'A6', 1, 1, 14000, 'FREE');
 
 -- --------------------------------------------------------
 
