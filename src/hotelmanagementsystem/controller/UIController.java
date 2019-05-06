@@ -328,7 +328,20 @@ public class UIController implements Initializable {
     }
 
     @FXML
-    private void deleteBooking(ActionEvent event) {
+    private void deleteBooking(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "DELETE FROM bookings WHERE BID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String bid = bidDelete.getText();
+        try {
+            pst = conn.prepareStatement(SQL);
+            pst.setString(1, bid);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        bidDelete.setText("");
     }
 
     @FXML
@@ -365,7 +378,20 @@ public class UIController implements Initializable {
     }
 
     @FXML
-    private void deleteGuest(ActionEvent event) {
+    private void deleteGuest(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "DELETE FROM guests WHERE GID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String gid = gidDelete.getText();
+        try {
+            pst = conn.prepareStatement(SQL);
+            pst.setString(1, gid);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        gidDelete.setText("");
     }
 
     @FXML
@@ -403,7 +429,20 @@ public class UIController implements Initializable {
     }
 
     @FXML
-    private void deleteRoom(ActionEvent event) {
+    private void deleteRoom(ActionEvent event) throws Exception {
+        Connection conn = getConnection();
+        String SQL = "DELETE FROM rooms WHERE RID=?";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String rid = ridDelete.getText();
+        try {
+            pst = conn.prepareStatement(SQL);
+            pst.setString(1, rid);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        ridDelete.setText("");
     }
     
     @FXML
