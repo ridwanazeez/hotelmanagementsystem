@@ -15,6 +15,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -42,6 +45,9 @@ public class UIController implements Initializable {
     ObservableList<bookingsTable> bookingstablelist = FXCollections.observableArrayList();
     ObservableList<guestsTable> gueststablelist = FXCollections.observableArrayList();
     ObservableList<roomsTable> roomstablelist = FXCollections.observableArrayList();
+
+    ObservableList<String> statuscreatelist = FXCollections.observableArrayList("FREE", "BOOKED");
+    ObservableList<String> statusupdatelist = FXCollections.observableArrayList("FREE", "BOOKED");
 
     @FXML
     private Pane mainScreen;
@@ -67,8 +73,6 @@ public class UIController implements Initializable {
     private TextField roomNumberCreate;
     @FXML
     private TextField priceCreate;
-    @FXML
-    private TextField numberofBathroomsCreate;
     @FXML
     private TextField numberOfBedsCreate;
     @FXML
@@ -167,16 +171,21 @@ public class UIController implements Initializable {
     private TableView<guestsTable> guestsTable;
     @FXML
     private TableView<roomsTable> roomsTable;
+    @FXML
+    private ComboBox<String> statusCreate;
+    @FXML
+    private ComboBox<String> statusUpdate;
+    @FXML
+    private TextField numberOfBathroomsCreate;
 
     /**
      * Initializes the controller class.
      * @param url
      * @param rb
      */
-    @Override
+    
     public void initialize(URL url, ResourceBundle rb) {
 
-        //bookings table try catch
         try {
             Connection conn = getConnection();
             
@@ -188,9 +197,8 @@ public class UIController implements Initializable {
 
         } catch (Exception ex) {
             Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //guests table try catch
+        }    
+    
         try {
             Connection conn = getConnection();
             
@@ -202,9 +210,8 @@ public class UIController implements Initializable {
 
         } catch (Exception ex) {
             Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        //rooms table try catch
+        } 
+        
         try {
             Connection conn = getConnection();
             
@@ -216,8 +223,8 @@ public class UIController implements Initializable {
 
         } catch (Exception ex) {
             Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        }           
+        
         bid.setCellValueFactory(new PropertyValueFactory<>("BID"));
         ridBookingsCol.setCellValueFactory(new PropertyValueFactory<>("RID"));
         gidBookingsCol.setCellValueFactory(new PropertyValueFactory<>("GID"));
@@ -241,6 +248,12 @@ public class UIController implements Initializable {
         bookingsTable.setItems(bookingstablelist);
         guestsTable.setItems(gueststablelist);
         roomsTable.setItems(roomstablelist);
+        
+        statusCreate.setValue("FREE");
+        statusCreate.setItems(statuscreatelist);
+        
+        statusUpdate.setValue("FREE");
+        statusUpdate.setItems(statusupdatelist);
    
     }    
 
@@ -285,9 +298,31 @@ public class UIController implements Initializable {
     }
 
     @FXML
-    private void createBooking(ActionEvent event) {
+    private void createBooking(ActionEvent event) throws SQLException, Exception {
+        Connection conn = getConnection();
+        String SQL = "INSERT INTO bookings (RID, GID, CheckIn, CheckOut) VALUES (?, ?, ?, ?)";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String rid = ridBookingsInput.getText();
+        String gid = gidBookingsInput.getText();
+        Date checkin = Date.valueOf(checkInBookingsInput.getValue());
+        Date checkout = Date.valueOf(checkOutBookingsInput.getValue());
+        try {
+            pst = conn.prepareStatement(SQL);
+            pst.setString(1, rid);
+            pst.setString(2, gid);
+            pst.setDate(3, checkin);
+            pst.setDate(4, checkout);            
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        ridBookingsInput.setText("");
+        gidBookingsInput.setText("");        
+        checkInBookingsInput.setValue(null);
+        checkOutBookingsInput.setValue(null);        
     }
-
+    
     @FXML
     private void updateBooking(ActionEvent event) {
     }
@@ -297,13 +332,34 @@ public class UIController implements Initializable {
     }
 
     @FXML
-    private void createGuest(ActionEvent event) {
+    private void createGuest(ActionEvent event) throws SQLException, Exception {
+        Connection conn = getConnection();
+        String SQL = "INSERT INTO guests (FirstName, LastName, Address, DateofBirth, Number) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String fname = guestFNameInput.getText();
+        String lname = guestLNameInput.getText();
+        String address = guestAddressInput.getText();
+        Date dob = Date.valueOf(guestDOBInput.getValue());
+        String number = guestNumberInput.getText();
+        try {
+            pst = conn.prepareStatement(SQL);
+            pst.setString(1, fname);
+            pst.setString(2, lname);
+            pst.setString(3, address);
+            pst.setDate(4, dob);
+            pst.setString(5, number);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        guestFNameInput.setText("");
+        guestLNameInput.setText("");
+        guestAddressInput.setText("");
+        guestDOBInput.setValue(null);
+        guestNumberInput.setText("");
     }
     
-    private void readGuests() {
-        
-    }
-
     @FXML
     private void updateGuest(ActionEvent event) {
     }
@@ -313,9 +369,35 @@ public class UIController implements Initializable {
     }
 
     @FXML
-    private void createRoom(ActionEvent event) {
+    private void createRoom(ActionEvent event) throws SQLException, Exception {
+        Connection conn = getConnection();
+        String SQL = "INSERT INTO rooms (RoomNumber, NumberOfBeds, NumberOfBathrooms, Price, Status) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement pst = conn.prepareStatement(SQL);
+        String roomnumber = roomNumberCreate.getText();
+        String numberofbeds = numberOfBedsCreate.getText();
+        String numberofbathrooms = numberOfBathroomsCreate.getText();
+        String price = priceCreate.getText();
+        String status = statusCreate.getValue();
+        try {
+            pst = conn.prepareStatement(SQL);
+            pst.setString(1, roomnumber);
+            pst.setString(2, numberofbeds);
+            pst.setString(3, numberofbathrooms);
+            pst.setString(4, price);
+            pst.setString(5, status);
+            pst.execute();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        refreshTable();
+        roomNumberCreate.setText("");
+        numberOfBedsCreate.setText("");
+        numberOfBathroomsCreate.setText("");
+        priceCreate.setText("");
+        statusCreate.setValue("");
+        statusCreate.setPromptText("Status");
     }
-
+    
     @FXML
     private void updateRoom(ActionEvent event) {
     }
@@ -339,7 +421,7 @@ public class UIController implements Initializable {
         bookingsScreen.setVisible(false);
         guestsScreen.setVisible(true);
         mainscreentext.setVisible(false);    
-        roomsScreen.setVisible(false);   
+        roomsScreen.setVisible(false);
     }
 
     @FXML
@@ -359,5 +441,53 @@ public class UIController implements Initializable {
         mainscreentext.setVisible(false);    
         roomsScreen.setVisible(false);
     }
+    
+    public void refreshTable() {
+        bookingstablelist.clear();
+        gueststablelist.clear();
+        roomstablelist.clear();
+        
+        try {
+            Connection conn = getConnection();
+            
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM bookings");
 
+            while(rs.next()) {
+                bookingstablelist.add(new bookingsTable(rs.getInt("BID"), rs.getInt("RID"), rs.getInt("GID"), rs.getDate("CheckIn"), rs.getDate("CheckOut")));
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    
+        try {
+            Connection conn = getConnection();
+            
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM guests");
+
+            while(rs.next()) {
+                gueststablelist.add(new guestsTable(rs.getInt("GID"), rs.getString("FirstName"), rs.getString("LastName"), rs.getString("Address"), rs.getString("Number"), rs.getDate("DateOfBirth")));
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        try {
+            Connection conn = getConnection();
+            
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM rooms");
+
+            while(rs.next()) {
+                roomstablelist.add(new roomsTable(rs.getString("RoomNumber"), rs.getString("Status"), rs.getInt("RID"), rs.getInt("NumberOfBeds"), rs.getInt("NumberOfBathrooms"), rs.getInt("Price")));
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(UIController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        
+        bookingsTable.setItems(bookingstablelist);
+        guestsTable.setItems(gueststablelist);
+        roomsTable.setItems(roomstablelist);
+    }
 }
